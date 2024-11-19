@@ -1,0 +1,102 @@
+---
+title: "Course Project"
+author: "Dacia Martinez Diaz"
+date: "17/11/2024"
+output: html_document
+---
+
+## 1. Overview
+
+The goal of this project is to predict the manner in which participants performed weight lifting exercises using sensor data collected from wearable devices. Six participants were asked to perform barbell lifts correctly and incorrectly in 5 different ways. The data collected from accelerometers on the belt, forearm, arm, and dumbell will be used to predict the "classe" variable.
+
+## 2. Data Loading & Preprocessing
+The data for this project comes from this source: 
+http://web.archive.org/web/20161224072740/http:/groupware.les.inf.puc-rio.br/har
+
+We'll load the provided CSV files for training and testing using read_csv()
+
+```{r,results = 'hide', message = FALSE, warning = FALSE}
+# Load necessary libraries
+library(caret)
+library(randomForest)
+library(e1071)
+library(gbm)
+# Load Data
+library(readr)
+training <- read_csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv")
+testing <- read_csv("https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv")
+
+```
+The dataset has irrelevant columns such as timestamps and ID columns that are unlikely to contribute to the model's predictive power. It also includes columns with a lot of missing values. We are going to remove these columns. 
+```{r}
+# Preprocess data (remove unnecessary columns, handle missing values)
+training <- training[, -c(1, 2, 3, 4, 5)]  # Remove non-predictive columns like timestamps, IDs
+training <- training[, colSums(is.na(training)) == 0]  # Remove columns with NAs
+# Check the number of NA values in each column
+na_counts <- colSums(is.na(training))
+# Print the number of NAs for each column
+na_counts
+```
+We also need to make sure that the "classe" column is treated as a factor variable for classification.
+```{r}
+# Convert the target variable "classe" to factor
+training$classe <- as.factor(training$classe)
+```
+## 2. Clasiffication Model
+
+We are going to build a Random Forest model and train it using 5 fold cross validation.
+
+Random forests are a good option for this classification task because they can efficiently handle datasets with a large number of features. Since they combine the predictions of multiple decision trees through an ensemble approach, the accuracy is better compared to individual trees. 
+
+A 5-fold CV ensures the model is trained and validated on various parts of the dataset, achieving a reliable estimate of its generalization performance. Using 5 folds balances the trade-off between computational efficiency and variance in performance metrics. While higher folds (e.g., 10) provide slightly lower variance, 5 folds are typically sufficient for most datasets and scenarios and are computationally less demanding compared to higher folds.
+
+```{r, results='hide'}
+# Set seed for reproducibility
+set.seed(123)
+
+# Set up cross-validation
+train_control <- trainControl(method = "cv", number = 5, savePredictions = TRUE)
+
+# Train a random forest model
+rf_model <- train(classe ~ ., data = training, method = "rf", trControl = train_control)
+
+```
+
+## 4. Evaluating the Model Performance
+
+```{r}
+# Evaluate the model performance
+
+# Evaluate model accuracy
+print(rf_model)
+
+# Confusion matrices for each fold
+conf_matrices <- lapply(split(rf_model$pred, rf_model$pred$Resample), function(fold) {
+  confusionMatrix(factor(fold$pred), factor(fold$obs))
+})
+
+# Print confusion matrices for each fold
+conf_matrices
+
+# Aggregate predictions
+all_preds <- rf_model$pred
+
+# Overall confusion matrix
+overall_conf_matrix <- confusionMatrix(factor(all_preds$pred), factor(all_preds$obs))
+print(overall_conf_matrix)
+
+```
+
+## 5. Conclusion
+Based on the cross-validation results, the Random Forest model demonstrates high performance across all folds, with an overall accuracy of 98.65% and a corresponding kappa statistic of 0.983, indicating strong agreement between predictions and true labels.The high sensitivity and specificity values reinforce its reliability for both detecting true positives and avoiding false positives across all classes.
+
+For classification problems, out-of-sample error can be computed as:
+
+      Out-of-Sample Error = 1 - Accuracy on unseen data
+
+In this case, the model's cross-validated accuracy is  98.65, therefore the out-of-sample error is approximately:
+
+      1 - 0.9865 = 0.0135 (1.35%)
+
+This means that the model is likely to generalize well and make accurate predictions on new data. We expect the out-of-sample error in the testing data set to be closer to 1.35%.
+
