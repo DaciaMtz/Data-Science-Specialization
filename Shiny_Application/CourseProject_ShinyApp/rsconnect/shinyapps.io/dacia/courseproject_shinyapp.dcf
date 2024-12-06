@@ -1,0 +1,10 @@
+name: courseproject_shinyapp
+title:
+username: dacia
+account: dacia
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13535115
+bundleId: 9470453
+url: https://dacia.shinyapps.io/courseproject_shinyapp/
+version: 1
