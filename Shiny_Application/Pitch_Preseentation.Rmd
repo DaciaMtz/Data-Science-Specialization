@@ -1,0 +1,29 @@
+---
+title: "Pitch Presentation"
+author: "Dacia Martinez Diaz"
+date: "12/4/2024"
+output: ioslides_presentation
+---
+
+## Introduction
+Our idea is to build an application that predicts outcomes using advanced models. 
+
+## Problem Statement
+**The problem**: Users struggle to find intuitive tools for prediction and analysis.
+
+**The solution**: A Shiny app that provides easy-to-use, real-time predictions.
+
+## Our Approach
+
+In this example we are predicting Petal Length from Sepal Length using the IRIS dataset
+```{r echo=TRUE, eval=TRUE}
+plot(iris$Sepal.Length, iris$Petal.Length, xlab = "Sepal Length", ylab = "Petal Length", pch = 16, col = "lightblue", main = "Prediction of Petal Length Based on Sepal Length")
+
+```
+
+## Try it out here
+
+[https://dacia.shinyapps.io/courseproject_shinyapp/](https://dacia.shinyapps.io/courseproject_shinyapp/)
+
+Find the code in my GitHub repository inside the "Shiny_Application" folder:  
+[https://github.com/DaciaMtz/Data-Science-Specialization](https://github.com/DaciaMtz/Data-Science-Specialization)
