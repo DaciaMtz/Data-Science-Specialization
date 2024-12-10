@@ -1,0 +1,53 @@
+---
+title: "Capstone Project Presentation"
+author: "Dacia Martinez Diaz"
+date: "2024-12-10"
+output: ioslides_presentation
+---
+
+## Next Word Predictor
+
+*Predictive Text for Enhanced User Experience*
+
+**Around the World:**
+- People are spending more time on mobile devices for activities like social networking, banking, and emails.
+
+**The Problem:**
+- Typing on mobile devices can be frustrating and time-consuming.
+
+**The Solution:**
+- Predictive text models, like those used by SwiftKey, make typing faster and easier. For example:
+  - When someone types: *"I went to the"*
+  - Predictions might include: *gym, store, restaurant.*
+
+**Our Mission:**
+- Build a smart predictive text tool to enhance user experience on any device.
+
+
+## How Our Predictive Model Works
+
+Our predictive text model uses **n-gram probabilities** and a **backoff strategy** to suggest the next word based on user input. 
+
+1. **Analyze Input:** The model splits the input text into individual words (tokens).
+2. **Check for Patterns:** It searches for matching patterns in:
+   - **4-grams:** Uses the last three words to predict the next.
+   - **3-grams:** If no match, uses the last two words.
+   - **2-grams:** If still no match, uses the last word.
+   - **1-gram:** Always includes the most frequent single words as a fallback.
+3. **Combine Predictions:** Results from all levels are ranked by probability, and the top three suggestions are shown.
+4. **Why It Works:** This approach ensures fast, accurate predictions while always offering a suggestion, even with minimal input.
+  
+
+## How the Product Works
+
+1. **Enter a phrase**: Type a partial sentence in the input box.
+2. **Click 'Predict Next Word'**: The app will show you the top 3 predictions.
+
+[https://dacia.shinyapps.io/capstone_project_app/](https://dacia.shinyapps.io/capstone_project_app/) 
+
+
+## Why It’s Awesome
+
+- **Fast and efficient**: Saves time by predicting the next word in seconds.
+- **Easy to use**: Simply type a phrase and select a prediction.
+

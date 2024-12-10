@@ -1,10 +1,10 @@
-name: Capstone_Project_App
-title: Capstone_Project_App
+name: capstone_project_app
+title:
 username: dacia
 account: dacia
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 13570887
-bundleId: 9497604
-url: https://dacia.shinyapps.io/Capstone_Project_App/
+appId: 13572064
+bundleId: 9498574
+url: https://dacia.shinyapps.io/capstone_project_app/
 version: 1
